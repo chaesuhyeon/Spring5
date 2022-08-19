@@ -7,7 +7,7 @@
         <packaging>war</packaging>
       </options>
     </properties>
-    <root id="archive" name="sp5-shap09-0.0.1-SNAPSHOT.war">
+    <root id="archive" name="sp5-chap09-0.0.1-SNAPSHOT.war">
       <element id="artifact" artifact-name="sp5-chap09:war exploded" />
     </root>
   </artifact>
