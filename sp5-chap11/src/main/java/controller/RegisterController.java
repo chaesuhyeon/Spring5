@@ -1,10 +1,8 @@
 package controller;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 import spring.DuplicateMemberException;
 import spring.MemberRegisterService;
 import spring.RegisterRequest;
@@ -35,11 +33,12 @@ public class RegisterController {
 //    }
 
     @PostMapping("/register/step2") //post방식만을 처리하기 때문에 'localhost:8080/sp5-chap11/register/step2' 치면 405에러
-    public String handelStep2(@RequestParam(value = "agree", defaultValue = "false") Boolean agree){
+    public String handelStep2(@RequestParam(value = "agree", defaultValue = "false") Boolean agree , Model model){
         // agree 요청 파라미터의 값을 읽어와서 agreeVal 파라미터에 할당. 요청 파라미터의 값이 없으면 "false"문자열을 값으로 사용
         if (!agree) {
             return "register/step1";
         }
+        model.addAttribute("registerRequest", new RegisterRequest());
         return "register/step2";
     }
 
@@ -62,7 +61,7 @@ public class RegisterController {
 //        return null;
 //    }
     @PostMapping("/register/step3")
-    public String handelStep3(RegisterRequest regReq){
+    public String handelStep3( @ModelAttribute("formData") RegisterRequest regReq){
         try {
             memberRegisterService.regist(regReq);
             return "register/step3";
