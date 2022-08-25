@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Arrays;
 import java.util.List;
@@ -19,11 +20,20 @@ public class SurveyController {
 //        return "survey/surveyForm";
 //    }
 
+//    @GetMapping
+//    public String form(Model model){
+//        List<Question> questions = createQuestions();
+//        model.addAttribute("questions" , questions);
+//        return "survey/surveyForm";
+//    }
+
     @GetMapping
-    public String form(Model model){
+    public ModelAndView form(Model model){
         List<Question> questions = createQuestions();
-        model.addAttribute("questions" , questions);
-        return "survey/surveyForm";
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("questions" , questions); // view에 전달할 모델 데이터는 addObject() 메서드로 추가
+        mav.setViewName("survey/surveyForm"); // 뷰 이름은 setViewName()메서드를 이용해서 지정
+        return mav;
     }
 
     private List<Question> createQuestions(){
