@@ -32,13 +32,23 @@ public class RegisterController {
 //        return "register/step2";
 //    }
 
-    @PostMapping("/register/step2") //post방식만을 처리하기 때문에 'localhost:8080/sp5-chap11/register/step2' 치면 405에러
-    public String handelStep2(@RequestParam(value = "agree", defaultValue = "false") Boolean agree , Model model){
+//    @PostMapping("/register/step2") //post방식만을 처리하기 때문에 'localhost:8080/sp5-chap11/register/step2' 치면 405에러
+//    public String handelStep2(@RequestParam(value = "agree", defaultValue = "false") Boolean agree , Model model){
+//        // agree 요청 파라미터의 값을 읽어와서 agreeVal 파라미터에 할당. 요청 파라미터의 값이 없으면 "false"문자열을 값으로 사용
+//        if (!agree) {
+//            return "register/step1";
+//        }
+//        model.addAttribute("registerRequest", new RegisterRequest());
+//        return "register/step2";
+//    }
+
+    // Model 대신에 커맨드 객체를 파라미터로 추가
+    @PostMapping("/register/step2")
+    public String handelStep2(@RequestParam(value = "agree", defaultValue = "false") Boolean agree , RegisterRequest registerRequest){
         // agree 요청 파라미터의 값을 읽어와서 agreeVal 파라미터에 할당. 요청 파라미터의 값이 없으면 "false"문자열을 값으로 사용
         if (!agree) {
             return "register/step1";
         }
-        model.addAttribute("registerRequest", new RegisterRequest());
         return "register/step2";
     }
 
