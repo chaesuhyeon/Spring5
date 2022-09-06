@@ -1,14 +1,11 @@
 package config;
 
+import interceptor.AuthCheckInterceptor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
-import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
-import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.*;
 
 @Configuration
 @EnableWebMvc
@@ -30,6 +27,13 @@ public class MvcConfig implements WebMvcConfigurer {
         registry.addViewController("/main").setViewName("main");
     }
 
+    @Override
+    public void addInterceptors(InterceptorRegistry registry){
+        registry.addInterceptor(authCheckInterceptor())
+                .addPathPatterns("/edit/**")
+                .excludePathPatterns("/edit/help/**"); //addPathPatterns메서드에 지정한 경로 패턴 중 일부를 제외하고 싶을 때 사용
+    }
+
     @Bean
     public MessageSource messageSource(){
         ResourceBundleMessageSource ms = new ResourceBundleMessageSource();
@@ -38,6 +42,11 @@ public class MvcConfig implements WebMvcConfigurer {
         // setBasenames()는 가변 인자이므로 사용할 메시지 프로퍼티 목록을 전달하라 수 있음
         ms.setDefaultEncoding("UTF-8"); // label.properties파일은 UTF-8 인코딩을 사용하므로 지정
         return ms;
+    }
+
+    @Bean
+    public AuthCheckInterceptor authCheckInterceptor(){
+        return new AuthCheckInterceptor();
     }
 
 }
