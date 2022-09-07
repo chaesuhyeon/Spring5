@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -18,6 +19,19 @@ import org.springframework.jdbc.support.KeyHolder;
 public class MemberDao {
 
     private JdbcTemplate jdbcTemplate;
+    private RowMapper<Member> memRowMapper =
+            new RowMapper<Member>() {
+                @Override
+                public Member mapRow(ResultSet rs, int rowNum)
+                        throws SQLException {
+                    Member member = new Member(rs.getString("EMAIL"),
+                            rs.getString("PASSWORD"),
+                            rs.getString("NAME"),
+                            rs.getTimestamp("REGDATE").toLocalDateTime());
+                    member.setId(rs.getLong("ID"));
+                    return member;
+                }
+            };
 
     public MemberDao(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
@@ -93,4 +107,13 @@ public class MemberDao {
         return count;
     }
 
+    public List<Member> selectByRegdate(LocalDateTime from, LocalDateTime to) {
+        List<Member> results = jdbcTemplate.query(
+                "select * from MEMBER where REGDATE between ? and ? " +
+                        "order by REGDATE desc",
+                memRowMapper,
+                from, to);
+        return results;
+    }
 }
+
