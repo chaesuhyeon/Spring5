@@ -64,4 +64,11 @@ public class ControllerConfig {
         return controller;
     }
 
+    @Bean
+    public MemberDetailController memberDetailController(){
+        MemberDetailController controller = new MemberDetailController();
+        controller.setMemberDao(memberDao);
+        return controller;
+    }
+
 }
