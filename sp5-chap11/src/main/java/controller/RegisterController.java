@@ -72,7 +72,7 @@ public class RegisterController {
 //        return null;
 //    }
     @PostMapping("/register/step3")
-    public String handelStep3(RegisterRequest regReq , Errors errors){
+    public String handelStep3(RegisterRequest regReq , Errors errors){ // Errors는 검증할 객체(RegisterRequest) 뒤에 위치해야한다. 그렇지 않으면 에러 발생
         new RegisterRequestValidator().validate(regReq, errors);
         if (errors.hasErrors()){
             return "register/step2";
