@@ -45,7 +45,7 @@ public class RegisterController {
 
     // Model 대신에 커맨드 객체를 파라미터로 추가
     @PostMapping("/register/step2")
-    public String handelStep2(@RequestParam(value = "agree", defaultValue = "false") Boolean agree , RegisterRequest registerRequest){
+    public String handelStep2(@RequestParam(value = "agree", defaultValue = "false") Boolean agree , RegisterRequest registerRequest){ // 커맨드 객체(RegisterRequest) 앞에는 @ModelAttribute가 생략됨. 따라서 Model에 담아두지 않아도 view에서 사용할 수 있다
         // agree 요청 파라미터의 값을 읽어와서 agreeVal 파라미터에 할당. 요청 파라미터의 값이 없으면 "false"문자열을 값으로 사용
         if (!agree) {
             return "register/step1";
